@@ -8,7 +8,8 @@ Sede Central Cartago
 Escuela de computación
 Aseguramiento de la calidad de software
 """
-
+from fecha_es_tupla import fecha_es_tupla as fecha_es_tupla
+from bisiesto import bisiesto as bisiesto
 #R4
 def obtener_numero_fecha(fecha):
     """
