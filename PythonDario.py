@@ -33,6 +33,7 @@ def dias_desde_primero_enero(fecha):
         if(fecha_es_valida(fecha)):
             año = fecha[0]
             return obtener_numero_fecha(fecha) - (obtener_numero_fecha((año,1,1)))
+    return -1
         
 #R5
 def dia_semana(fecha):
@@ -57,5 +58,6 @@ def dia_semana(fecha):
             j = año // 100 #Siglo basado en 0. Ej. 1995 -> 19
             dia_de_semana = (((dia + ((13*(mes+ 1))//5) + k + (k//4) + (j//4) + 5*j) + 6)%7)
             return dia_de_semana
+    return -1
 
 
