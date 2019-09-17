@@ -7,7 +7,7 @@ from bisiesto import bisiesto as bisiesto
 def fecha_es_valida(fecha):
 	if (not fecha_es_tupla(fecha)):
 		return False
-	anno, dia, mes = fecha
+	anno, mes, dia = fecha
 	if (mes < 1 or dia < 1 or anno < 1):
 		return False
 	if (dia <= (dias_de_mes(fecha)) and mes < 12):
@@ -20,7 +20,7 @@ def fecha_es_valida(fecha):
 def dias_de_mes(fecha):
 	if ( not fecha_es_tupla(fecha)):
 		return -1
-	anno, mes = (fecha[0],fecha[-1])
+	anno, mes = fecha[:-1]
 	if (mes ==2):
 		if (bisiesto(fecha)):
 			return 29
