@@ -70,7 +70,7 @@ def dias_de_mes(fecha):
 		if (bisiesto(anno)):
 			return 29
 		return 28
-	if (mes%2 == 1 and mes < 7) or (mes%2 == 0 and mes > 7):
+	if (mes%2 == 1 and mes < 7) or (mes%2 == 0 and mes > 7) or mes == 7:
 		return 31
 	elif mes <= 12:
 		return 30
@@ -152,13 +152,25 @@ def imprimir_semana(mes, anno, dia_actual):
     dia_sem = dia_semana((anno, mes, dia_actual))
     dias_mes = dias_de_mes((anno, mes, dia_actual))
     for i in range(7):
-        resultado += ' '
+        resultado += '  '
         if i < dia_sem or dias_mes < dia_actual:
             resultado += '  '
         else:
             resultado += '%2d' % dia_actual
             dia_actual += 1
     return (resultado, dia_actual)
+
+def encabezado_mes(mes):
+    meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    len_mes = len(meses[mes])
+    string = ""
+    if(len_mes <= 5):
+        string += "%16s%10s" % (meses[mes], " ")
+    elif(len_mes <= 7):
+        string += "%17s%9s" % (meses[mes], " ")
+    else:
+        string += "%18s%8s" % (meses[mes], " ")
+    return string
 
 # Entrada: dia_actual, matriz de 1 de modelo de meses
 #          anno, anno deseado a imprimir
@@ -169,7 +181,20 @@ def formar_string_impresion(dia_actual, anno):
     len_i = len(dia_actual[0]) #cantidad de columnas
     for i in range(len_dia_actual):
         j = 0
-        while dia_actual[i][j] <= dias_de_mes((anno, j + 1, 1)): #verifica que no se pase de los dias del mes
+        sigue = True
+        for k in range(len_i):
+            impresion += "  " + encabezado_mes((i * len_i) + k)
+            if k < len_i - 1:
+                impresion += '  |  '
+        impresion += "\n"
+        for k in range(len_i):
+            impresion += "   D   L   K   M   J   V   S"
+            if k < len_i - 1:
+                impresion += '  |  '
+        impresion += "\n"
+        while sigue or j < len_i - 1: #verifica que no se pase de los dias del mes
+            if(j == 0):
+                sigue = False
             temp, dia_actual[i][j] = imprimir_semana((i * len_i) + j + 1, anno, dia_actual[i][j]) #extrae la semana del mes
             impresion += temp #agrega la semana al string de impresion
             if j < len_i - 1:
@@ -178,9 +203,12 @@ def formar_string_impresion(dia_actual, anno):
                 impresion += '\n'
             j += 1
             j %= len_i
+            sigue = sigue or dia_actual[i][j] <= dias_de_mes((anno, (i * len_i) + j + 1, 1))
         impresion += '\n'
     return impresion
 
 def imprimir_4x3(anno):
+    if anno < 1583:
+        return -1
     dia_actual = [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]]
     print(formar_string_impresion(dia_actual, anno))
