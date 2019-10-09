@@ -42,7 +42,7 @@ def bisiesto(año):
 
 #R2
 
-# Entrada: fecha (yyyy, d, m)
+# Entrada: fecha (yyyy, m, d)
 # Salida: booleano, determina si la fecha dada existe en el calendario gregoriano
 def fecha_es_valida(fecha):
     if (not fecha_es_tupla(fecha)):
@@ -105,6 +105,8 @@ def obtener_numero_fecha(fecha):
     Al tener el inicio del año en marzo, los bisiestos se añaden el ultimo dia del año, por cuanto es posible saber cuantos dias
     han transcurrido en un año usando aritmética simple.
     Finalmente se suma el día del mes - 1, ya que el excedente fue tomado en cuenaa anteriormente
+    Algoritmo tomado de: Meyer, P. (1998)
+    https://www.hermetic.ch/cal_stud/jdn.htm
     """
     año, mes, dia = fecha
     mes_corrido = (mes + 9) % 12
@@ -145,6 +147,8 @@ def dia_semana(fecha):
             return dia_de_semana
     return -1
 
+#R6
+
 # Entrada: mes, anno, dia_actual
 # Salida: tupla, (string de la semana, dia en el que quedo)
 def imprimir_semana(mes, anno, dia_actual):
@@ -182,5 +186,35 @@ def formar_string_impresion(dia_actual, anno):
     return impresion
 
 def imprimir_4x3(anno):
-    dia_actual = [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]]
-    print(formar_string_impresion(dia_actual, anno))
+    if(anno < 1583):
+        print("El año mínimo imprimible del calendario Gregoriano es 1583")
+    else:
+        dia_actual = [[1, 1, 1], [1, 1, 1], [1, 1, 1], [1, 1, 1]]
+        print(formar_string_impresion(dia_actual, anno))
+
+
+#R7
+
+# Entrada: una fecha valida y la cantidad de dias por ser aumentados
+# Salida: la fecha resultante o el valor de error "-1"
+def fecha_futura(fecha, n):
+    #Se incrementa dia por dia en fechas validas hasta encontrar la fecha final
+    if(fecha_es_valida(fecha) and n >= 0):
+        while(n > 0):
+            fecha = dia_siguiente(fecha)
+            n-=1
+        return fecha
+    else:
+        return -1
+
+
+#R8
+
+# Entrada: Dos fechas validas en el formato (a,m,d)
+# Salida: la catniadd de dias entre ambas fechas o el valor de error "-1"
+def dias_entre(fecha1, fecha2):
+    #Se restan las fechas transformadas a su dia juliano.
+    if(fecha_es_valida(fecha1) and fecha_es_valida(fecha2)):
+        return abs(obtener_numero_fecha(fecha1) - obtener_numero_fecha(fecha2))
+    else:
+        return -1
